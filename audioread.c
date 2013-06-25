@@ -18,6 +18,7 @@
 #include "libavcodec/avcodec.h"
 #include "libavformat/avformat.h"
 #include "libavutil/mem.h"
+#include "libavutil/dict.h"
 #include <string.h>
 #include <mex.h>
 #include <matrix.h>
@@ -75,25 +76,17 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
 
     /* create the actual struct */
     pTagStruct = mxCreateStructMatrix( 1, 1, 8, (const char**) fieldnames );
-    free( fieldnames );
 
     /* fill the struct */
-    mxSetField( pTagStruct, 0, "title",
-        mxCreateString( pFormatContext->title ) );
-    mxSetField( pTagStruct, 0, "author",
-        mxCreateString( pFormatContext->author ) );
-    mxSetField( pTagStruct, 0, "copyright",
-        mxCreateString( pFormatContext->copyright ) );
-    mxSetField( pTagStruct, 0, "comment",
-        mxCreateString( pFormatContext->comment ) );
-    mxSetField( pTagStruct, 0, "album",
-        mxCreateString( pFormatContext->album ) );
-    mxSetField( pTagStruct, 0, "year",
-        mxCreateDoubleScalar( (double) pFormatContext->year ) );
-    mxSetField( pTagStruct, 0, "track",
-        mxCreateDoubleScalar( (double) pFormatContext->track ) );
-    mxSetField( pTagStruct, 0, "genre",
-        mxCreateString( pFormatContext->genre ) );
+    for( idx = 0; idx < 8; idx++ ) {
+        AVDictionaryEntry* entry = av_dict_get(pFormatContext->metadata, fieldnames[idx], NULL, 0);
+
+        if( entry == NULL )
+            continue;
+
+        mxSetField( pTagStruct, 0, fieldnames[idx], mxCreateString( entry->value ) );
+    }
+    free( fieldnames );
 
     /* put the tag_info struct in the main struct */
     mxSetField( pOutArray, 0, "tag_info", pTagStruct );
