@@ -39,16 +39,15 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     /* ==========   build the main struct   ========== */
 
     /* set the field names */
-    fieldnames = calloc( 6, sizeof(char*) );
+    fieldnames = calloc( 5, sizeof(char*) );
     fieldnames[0] = "file_name";
     fieldnames[1] = "container_name";
     fieldnames[2] = "duration";
-    fieldnames[3] = "file_size";
-    fieldnames[4] = "tag_info";
-    fieldnames[5] = "streams";
+    fieldnames[3] = "tag_info";
+    fieldnames[4] = "streams";
 
     /* create the actual struct */
-    pOutArray = mxCreateStructMatrix( 1, 1, 6, (const char**) fieldnames );
+    pOutArray = mxCreateStructMatrix( 1, 1, 5, (const char**) fieldnames );
 
     free( fieldnames );
 
@@ -59,8 +58,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
         mxCreateString( pFormatContext->iformat->long_name ) );
     mxSetField( pOutArray, 0, "duration",
         mxCreateDoubleScalar( (double)pFormatContext->duration / AV_TIME_BASE));
-    mxSetField( pOutArray, 0, "file_size",
-        mxCreateDoubleScalar( (double) pFormatContext->file_size ) );
 
     /* ==========   build the tag_info struct   ========== */
 
