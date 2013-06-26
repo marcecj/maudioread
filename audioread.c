@@ -229,15 +229,15 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     av_register_all();
 
     /* open file */
-    if ( av_open_input_file( &pFormatContext, szFileName, NULL, 0, NULL) != 0 ) {
+    if ( avformat_open_input( &pFormatContext, szFileName, NULL, NULL) != 0 ) {
         mexErrMsgTxt("could not retrieve codec context");
         return;
     }
 
     /* retrieve stream */
-    if( av_find_stream_info(pFormatContext) < 0 ) {
+    if( avformat_find_stream_info(pFormatContext, NULL) < 0 ) {
         /* free memory and exit */
-        av_close_input_file( pFormatContext );
+        avformat_close_input( &pFormatContext );
         mexErrMsgTxt("could not retrieve stream");
         return;
     }
@@ -251,7 +251,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     }
     if( num_streams == 0 ) {
         /* free memory and exit */
-        av_close_input_file( pFormatContext );
+        avformat_close_input( &pFormatContext );
         mexErrMsgTxt("no audio stream found");
         return;
     }
@@ -270,7 +270,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
         pCodec[idx] = avcodec_find_decoder( pCodecContext[idx]->codec_id );
         if( pCodec[idx] == NULL ) {
             /* free memory and exit */
-            av_close_input_file( pFormatContext );
+            avformat_close_input( &pFormatContext );
             num_streams = idx;
             for( idx = 0; idx < num_streams; ++idx )
                 avcodec_close( pCodecContext[idx] );
@@ -282,9 +282,9 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
         }
 
         /* open the codec for the decoder */
-        if (avcodec_open(pCodecContext[idx], pCodec[idx]) < 0) {
+        if (avcodec_open2(pCodecContext[idx], pCodec[idx], NULL) < 0) {
             /* free memory and exit */
-            av_close_input_file( pFormatContext );
+            avformat_close_input( &pFormatContext );
             num_streams = idx;
             for( idx = 0; idx < num_streams; ++idx )
                 avcodec_close( pCodecContext[idx] );
@@ -325,7 +325,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
         mxSetPr( plhs[0], pContent );
 
         /* free memory and exit */
-        av_close_input_file( pFormatContext );
+        avformat_close_input( &pFormatContext );
         for( idx = 0; idx < num_streams; ++idx )
             avcodec_close( pCodecContext[idx] );
         free( pCodecContext );
@@ -493,7 +493,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     free( pCodecContext );
     free( num_channels );
     free( pCodec );
-    av_close_input_file( pFormatContext );
+    avformat_close_input( &pFormatContext );
 
     for( idx = 0; idx < num_streams; ++idx )
         free( audio_buf[idx] );
