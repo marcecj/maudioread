@@ -8,7 +8,7 @@ elseif ispc
 	mex -L..\Windows\lib -lavcodec-51 -lavformat-52 -I..\Windows\include audioread.c -output audioread
 elseif isunix
 	% this does not work.
-	mex -L../Linux/lib -lavutil -lavcodec -lavformat -I../Linux/include audioread.c
+	mex -L../Linux/lib CFLAGS='\$CFLAGS -std=c99 -pedantic' -lavutil -lavcodec -lavformat -I../Linux/include audioread.c
 end
 
 
