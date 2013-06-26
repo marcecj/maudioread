@@ -339,16 +339,14 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
      * read and decode actual audio data                                      *
      * ---------------------------------------------------------------------- */
 
-    int16_t *block_buf = NULL;      // buffer for the samples in one audio block
     int block_len;                  // length of one block
     int16_t **audio_buf;            // buffer for the whole audio stream
     long *audio_buf_len;            // length of the whole audio stream
     long *actual_buf_size;          // length of the whole audio buffer
     int alloc_increment = 65536;    // allocate this much samples at buffer
-    int read_bytes, n;              // counter variables
+    int read_bytes;                 // counter variables
     AVPacket packet;                // one block of encoded audio
     static int bytes_remaining = 0;
-    static uint8_t *raw_data;       // a block of raw, encoded data
 
     int max_samples_per_channel = 0;
 
@@ -380,23 +378,23 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 
             if( packet.stream_index == stream_idx[idx] ) {
 
+                /* request the entire file */
+                AVFrame block_frame;
                 bytes_remaining = packet.size;
-                raw_data = packet.data;
 
                 while( bytes_remaining > 0 ) {
 
-                    /* reallocate block buffer. This is a libavcodec requirement */
-                    block_buf = (int16_t*) realloc( block_buf,
-                                AVCODEC_MAX_AUDIO_FRAME_SIZE * sizeof(int16_t) );
-                    block_len = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+                    block_frame.nb_samples = bytes_remaining;
 
-                    read_bytes = avcodec_decode_audio2(pCodecContext[idx], block_buf,
-                                                       &block_len,
-                                                       raw_data, bytes_remaining);
+                    read_bytes = avcodec_decode_audio4(pCodecContext[idx], &block_frame,
+                                                       &block_len, &packet);
 
-                    raw_data += read_bytes;
+                    if( block_len == 0 )
+                        continue;
+
+                    block_len = read_bytes/sizeof(int16_t);
+
                     bytes_remaining -= read_bytes;
-                    block_len /= sizeof(int16_t);
                     audio_buf_len[idx] += block_len;
 
                     /* enlarge audio buffer by alloc_increment if necessary */
@@ -406,8 +404,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
                                         actual_buf_size[idx] * sizeof(int16_t) );
                     }
                     /* copy the new samples to the audio buffer */
-                    for( n = 0; n < block_len; ++n )
-                        audio_buf[idx][audio_buf_len[idx] - block_len + n] = block_buf[n];
+                    memcpy(&audio_buf[idx][audio_buf_len[idx]-block_len], block_frame.data[idx], block_len*num_channels[idx]);
                 }
             }
         }
@@ -498,7 +495,6 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     free( pCodec );
     av_close_input_file( pFormatContext );
 
-    free( block_buf );
     for( idx = 0; idx < num_streams; ++idx )
         free( audio_buf[idx] );
     free( audio_buf );
