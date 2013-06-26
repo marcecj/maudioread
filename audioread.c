@@ -19,6 +19,7 @@
 #include "libavformat/avformat.h"
 #include "libavutil/mem.h"
 #include "libavutil/dict.h"
+#include "libavutil/avutil.h"
 #include <string.h>
 #include <mex.h>
 #include <matrix.h>
@@ -243,7 +244,7 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
 
     /* find all audio streams */
     for( idx = 0; idx < pFormatContext->nb_streams; idx++ ) {
-        if( pFormatContext->streams[idx]->codec->codec_type == CODEC_TYPE_AUDIO ) {
+        if( pFormatContext->streams[idx]->codec->codec_type == AVMEDIA_TYPE_AUDIO ) {
             stream_idx = (int*) realloc( stream_idx, ++num_streams*sizeof(int));
             stream_idx[num_streams-1] = idx;
         }
