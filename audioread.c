@@ -114,7 +114,7 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
 
     /* create the actual struct */
     pStreamsStruct =
-        mxCreateStructMatrix( 1, num_streams, 8, (const char**) fieldnames );
+        mxCreateStructMatrix( 1, num_streams, 9, (const char**) fieldnames );
     free( fieldnames );
 
     for( idx = 0; idx < num_streams; idx++ ) {
