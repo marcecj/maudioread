@@ -33,14 +33,11 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     char **fieldnames;
     mxArray *pTagStruct;
     mxArray *pStreamsStruct;
-    int idx2;
 
     /* ==========   build the main struct   ========== */
 
     /* set the field names */
     fieldnames = calloc( 6, sizeof(char*) );
-    for( idx = 0; idx < 6; idx++ )
-        fieldnames[idx] = calloc( 32, sizeof(char) );
     fieldnames[0] = "file_name";
     fieldnames[1] = "container_name";
     fieldnames[2] = "duration";
@@ -51,8 +48,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     /* create the actual struct */
     pOutArray = mxCreateStructMatrix( 1, 1, 6, (const char**) fieldnames );
 
-    for( idx = 0; idx < 5+num_streams; idx++ )
-        free( fieldnames[idx] );
     free( fieldnames );
 
     /* fill the struct */
@@ -69,8 +64,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
 
     /* set the field names */
     fieldnames = calloc( 8, sizeof(char*) );
-    for( idx = 0; idx < 8; idx++ )
-        fieldnames[idx] = calloc( 32, sizeof(char) );
     fieldnames[0] = "title";
     fieldnames[1] = "author";
     fieldnames[2] = "copyright";
@@ -82,8 +75,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
 
     /* create the actual struct */
     pTagStruct = mxCreateStructMatrix( 1, 1, 8, (const char**) fieldnames );
-    for( idx = 0; idx < 8; idx++ )
-        free( fieldnames[idx] );
     free( fieldnames );
 
     /* fill the struct */
@@ -111,8 +102,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
 
     /* set the field names */
     fieldnames = calloc( 9, sizeof(char*) );
-    for( idx2 = 0; idx2 < 9; idx2++ )
-        fieldnames[idx2] = calloc( 32, sizeof(char) );
     fieldnames[0] = "codec_name";
     fieldnames[1] = "channels";
     fieldnames[2] = "sample_rate";
@@ -126,8 +115,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     /* create the actual struct */
     pStreamsStruct =
         mxCreateStructMatrix( 1, num_streams, 8, (const char**) fieldnames );
-    for( idx2 = 0; idx2 < 9; idx2++ )
-        free( fieldnames[idx2] );
     free( fieldnames );
 
     for( idx = 0; idx < num_streams; idx++ ) {
