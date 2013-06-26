@@ -65,21 +65,22 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     /* ==========   build the tag_info struct   ========== */
 
     /* set the field names */
-    fieldnames = calloc( 8, sizeof(char*) );
+    fieldnames = calloc( 9, sizeof(char*) );
     fieldnames[0] = "title";
     fieldnames[1] = "author";
-    fieldnames[2] = "copyright";
-    fieldnames[3] = "comment";
-    fieldnames[4] = "album";
-    fieldnames[5] = "year";
-    fieldnames[6] = "track";
-    fieldnames[7] = "genre";
+    fieldnames[2] = "artist";
+    fieldnames[3] = "copyright";
+    fieldnames[4] = "comment";
+    fieldnames[5] = "album";
+    fieldnames[6] = "date";
+    fieldnames[7] = "track";
+    fieldnames[8] = "genre";
 
     /* create the actual struct */
-    pTagStruct = mxCreateStructMatrix( 1, 1, 8, (const char**) fieldnames );
+    pTagStruct = mxCreateStructMatrix( 1, 1, 9, (const char**) fieldnames );
 
     /* fill the struct */
-    for( idx = 0; idx < 8; idx++ ) {
+    for( idx = 0; idx < 9; idx++ ) {
         AVDictionaryEntry* entry = av_dict_get(pFormatContext->metadata, fieldnames[idx], NULL, 0);
 
         if( entry == NULL )
