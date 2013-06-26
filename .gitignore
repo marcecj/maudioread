@@ -1,0 +1,19 @@
+# backup files
+*~
+
+# binary files
+*.[oa]
+*.os
+*.mex*
+
+# audio files
+*.aif
+
+# scons files
+config.log
+.sconsign.dblite
+.sconf_temp/
+.matlab_vars_cache
+
+# vim swap
+*.swp
