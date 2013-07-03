@@ -1,14 +1,9 @@
 /* Audioread.c is a mex-file that reads in arbitrary audio files much like the
- * built-in function wavread of Matlab. For the full documentation of its usage,
- * please refer to the attached m-file audioread.m.
+ * built-in function wavread of Matlab. For general instructions, see the README
+ * file; for the full documentation of its usage, please refer to the attached
+ * m-file audioread.m.
  *
- * To compile this program, be sure to use GCC. Also, it *should* be possible to
- * compile it with any other C99-compliant compiler. On Windows, it is
- * recommended to use gnumex instead of one of the provided mex-compilers.
- * This file was meant to be linked against libavformat and libavcodec, which
- * are part of FFMPEG (from 09-02-2009).
- *
- * written by Bastian Bechtold, 2009 for the University of Applied Sciences
+ * Written by Bastian Bechtold, 2009 for the University of Applied Sciences
  * Oldenburg, Ostfriesland, Wilhelmshaven, licensed as GPLv2.
  * See the end of this file for the full license text.
  */
