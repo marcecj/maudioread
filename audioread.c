@@ -347,7 +347,6 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     long idx3;
     double max_uint16_quot = 1 / pow(2,15);
 
-
     audio_buf = (int16_t**) calloc( num_streams, sizeof(int16_t*) );
     audio_buf_len = (long*) calloc( num_streams, sizeof(long) );
     actual_buf_size = (long*) calloc( num_streams, sizeof(long) );

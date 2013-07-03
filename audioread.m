@@ -2,12 +2,12 @@ function [ varargin ] = audioread( varargout )
 %AUDIOREAD reads audio files
 %   Y=AUDIOREAD(FILENAME) reads a the file specified by FILENAME and returns
 %	the sampled audio data in Y. Amplitude values are in the range [-1,+1].
-%	
-%	note that in files with more than one stream, the output matrix will be 
+%
+%	note that in files with more than one stream, the output matrix will be
 %	three-dimensional.
 %
 %	[Y,FS,NBITS]=AUDIOREAD(...) returns the sample rate (FS) in Hz and the
-%	average number of bits per sample (NBITS) used to encode the data in the 
+%	average number of bits per sample (NBITS) used to encode the data in the
 %	file. Since both values may be different in different streams, these are
 %	arrays that contain one value for each stream.
 %

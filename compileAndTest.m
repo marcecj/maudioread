@@ -11,7 +11,6 @@ elseif isunix
 	mex -L../Linux/lib CFLAGS='\$CFLAGS -std=c99 -pedantic' -lavutil -lavcodec -lavformat -I../Linux/include audioread.c
 end
 
-
 tic
 [y fs bit opt]=audioread('../Testfiles/Test.wav');
 toc

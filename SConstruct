@@ -104,7 +104,6 @@ if not (GetOption('clean') or GetOption('help')):
 # a visual studio project (if the current platform is Windows and MinGW is not
 # used).
 
-
 if env['debug']:
     if env['PLATFORM'] == "win32" and 'mingw' not in env['TOOLS']:
         env.AppendUnique(CCFLAGS='/Zi', LINKFLAGS='/DEBUG')
