@@ -1,0 +1,2 @@
+After updating to FFmpeg 1.0.7, I found out that the "quantizer_noise_shaping"
+field has been marked as deprecated.  So move away from that, too.
