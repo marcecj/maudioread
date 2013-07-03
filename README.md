@@ -1,7 +1,7 @@
 # The maudioread Mex extension
 Marc Joliet <marcec@gmx.de>
 
-Copyright (C) 2009 Bastian Bechtold
+Copyright (C) 2009 Bastian Bechtold  
 Copyright (C) 2013 Marc Joliet
 
 ## Introduction
