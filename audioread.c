@@ -88,7 +88,7 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     /* ==========   build the streams struct   ========== */
 
     /* set the field names */
-    fieldnames = calloc( 9, sizeof(char*) );
+    fieldnames = calloc( 8, sizeof(char*) );
     fieldnames[0] = "codec_name";
     fieldnames[1] = "channels";
     fieldnames[2] = "sample_rate";
@@ -97,11 +97,10 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
     fieldnames[5] = "frame_size";
     fieldnames[6] = "min_quantizer";
     fieldnames[7] = "max_quantizer";
-    fieldnames[8] = "quantizer_noise_shaping";
 
     /* create the actual struct */
     pStreamsStruct =
-        mxCreateStructMatrix( 1, num_streams, 9, (const char**) fieldnames );
+        mxCreateStructMatrix( 1, num_streams, 8, (const char**) fieldnames );
     free( fieldnames );
 
     for( idx = 0; idx < num_streams; idx++ ) {
@@ -123,9 +122,6 @@ mxArray *create_opt_info_struct( AVFormatContext *pFormatContext,
             mxCreateDoubleScalar( (double) pCodecContext[idx]->qmin ) );
         mxSetField( pStreamsStruct, idx, "max_quantizer",
             mxCreateDoubleScalar( (double) pCodecContext[idx]->qmax ) );
-        mxSetField( pStreamsStruct, idx, "quantizer_noise_shaping",
-            mxCreateDoubleScalar( (double)
-            pCodecContext[idx]->quantizer_noise_shaping) );
     }
 
     /* put the streams struct in the main struct */
