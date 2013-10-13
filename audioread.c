@@ -236,10 +236,10 @@ void mexFunction( int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[] )
     }
 
     /* find all audio streams */
-    for( idx = 0; idx < pFormatContext->nb_streams; idx++ ) {
-        if( pFormatContext->streams[idx]->codec->codec_type == AVMEDIA_TYPE_AUDIO ) {
+    for( unsigned int idx2 = 0; idx2 < pFormatContext->nb_streams; idx2++ ) {
+        if( pFormatContext->streams[idx2]->codec->codec_type == AVMEDIA_TYPE_AUDIO ) {
             stream_idx = (int*) realloc( stream_idx, ++num_streams*sizeof(int));
-            stream_idx[num_streams-1] = idx;
+            stream_idx[num_streams-1] = idx2;
         }
     }
     if( num_streams == 0 ) {
